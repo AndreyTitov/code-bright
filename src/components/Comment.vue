@@ -87,7 +87,6 @@ export default {
       this.newBody = '';
     },
     editComment() {
-      console.log(this.newBody, this.newTitle);
       this.showOverlay = !this.showOverlay;
       this.showEditWindow = !this.showEditWindow;
       this.newTitle = '';
