@@ -1,4 +1,4 @@
-# test-app
+# Test case for Code bright
 
 ## Project setup
 ```
