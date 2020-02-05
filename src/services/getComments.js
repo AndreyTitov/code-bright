@@ -33,6 +33,14 @@ class GetComments {
         console.log(error);
       });
   }
+
+  editComment(data, id) {
+    return axios.put(this.endpoint + id, data)
+      .then(response => response)
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }
 
 const getCommentsData = new GetComments();

@@ -9,13 +9,14 @@
       <input type="text"
              class="edit-comment__input"
              placeholder="Edit title"
-             v-model="newBody">
+             v-model="newTitle">
       <input type="text"
              class="edit-comment__input"
              placeholder="Edit body"
-             v-model="newTitle">
+             v-model="newBody">
       <button class="edit-comment__btn"
-              @click="editComment">APPLY</button>
+              @click="editComment">APPLY
+      </button>
     </div>
     <div class="comment-wrapper wrapper">
       <div>
@@ -29,11 +30,14 @@
       <ul v-if="showEditMenu"
           class="comment-edit__menu">
         <li @click="showEditMenu = !showEditMenu"
-            class="close">Close</li>
+            class="close">Close
+        </li>
         <li class="edit"
-            @click="showEditComment">Edit</li>
+            @click="showEditComment">Edit
+        </li>
         <li class="delete"
-            @click="deleteComment">Delete</li>
+            @click="deleteComment">Delete
+        </li>
       </ul>
       <div class="comment-content__wrapper">
         <h3>{{comment.comment.title}}</h3>
@@ -87,6 +91,21 @@ export default {
       this.newBody = '';
     },
     editComment() {
+      const { id } = this.$route.params;
+
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+
+      const data = {
+        headers: myHeaders,
+        created_at: 151551515,
+        title: this.newTitle,
+        body: this.newBody,
+        redirect: 'follow',
+      };
+
+      this.$store.dispatch('editComment', { data, id });
+
       this.showOverlay = !this.showOverlay;
       this.showEditWindow = !this.showEditWindow;
       this.newTitle = '';
@@ -321,7 +340,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 2;
   }
 </style>
