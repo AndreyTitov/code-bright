@@ -3,9 +3,7 @@
     <Header />
     <div>
       <div class="text-center">
-          <div>
-              <router-view/>
-          </div>
+        <router-view />
       </div>
     </div>
     <Footer />
@@ -35,7 +33,6 @@ body {
   margin: 0;
   font-family: 'Sofia Pro';
   background: #f7f7f7;
-  height: 100vh;
 }
 
 #app {
@@ -50,19 +47,16 @@ img {
 .wrapper {
   padding-left: 15px;
   padding-right: 15px;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 1fr auto;
 
   @media (min-width: 768px) {
-
+    width: 750px;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0 auto;
   }
 
   @media (min-width: 1600px) {
     width: 1265px;
-    padding-left: 0;
-    padding-right: 0;
-    margin: 0 auto;
   }
 }
 
@@ -74,4 +68,8 @@ img {
     font-family: 'Sofia Pro';
   }
 
+  textarea {
+    font-family: 'Sofia Pro';
+    font-size: 1em;
+  }
 </style>

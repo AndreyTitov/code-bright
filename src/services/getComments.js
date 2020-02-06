@@ -20,7 +20,12 @@ class GetComments {
 
   getComment(id) {
     return axios.get(this.endpoint + id)
-      .then(response => response)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.data;
+        }
+        return console.log('error');
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -28,7 +33,12 @@ class GetComments {
 
   deleteComment(id) {
     return axios.delete(this.endpoint + id)
-      .then(response => response)
+      .then((response) => {
+        if (response.status === 200) {
+          return response;
+        }
+        return console.log('error');
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -36,7 +46,7 @@ class GetComments {
 
   editComment(data, id) {
     return axios.put(this.endpoint + id, data)
-      .then(response => response)
+      .then(response => response.data)
       .catch((error) => {
         console.log(error);
       });

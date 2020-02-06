@@ -3,64 +3,81 @@
     <div v-if="showOverlay"
          class="overlay"
          @click="closeEditComment"></div>
-    <div v-if="showEditWindow"
-         class="edit-comment__wrapper">
-      <h3>Edit comment</h3>
-      <input type="text"
-             class="edit-comment__input"
-             placeholder="Edit title"
-             v-model="newTitle">
-      <input type="text"
-             class="edit-comment__input"
-             placeholder="Edit body"
-             v-model="newBody">
-      <button class="edit-comment__btn"
-              @click="editComment">APPLY
-      </button>
+    <transition enter-active-class="animated fadeIn faster"
+                leave-active-class="animated fadeOut faster">
+      <div v-if="showEditWindow"
+           class="edit-comment__wrapper">
+        <h3>Edit comment</h3>
+        <input type="text"
+               class="edit-comment__input"
+               placeholder="Edit title"
+               v-model="newTitle">
+        <textarea type="text"
+               class="edit-comment__input"
+               placeholder="Edit body"
+               cols="30"
+               rows="10"
+               v-model="newBody"></textarea>
+        <button class="edit-comment__btn"
+                @click="editComment"
+                :disabled="newTitle == '' || newBody == ''">APPLY
+        </button>
+      </div>
+    </transition>
+    <div>
+      <div v-if="comment.comment" class="comment-wrapper wrapper">
+        <div>
+          <router-link :to="{name: 'comments'}">Back to comments</router-link>
+        </div>
+        <div class="comment-edit__wrapper">
+          <font-awesome-icon icon="edit"
+                             class="comment-edit__icon"
+                             @click="showEditMenu = !showEditMenu"/>
+        </div>
+        <transition enter-active-class="animated zoomInRight faster"
+                    leave-active-class="animated zoomOutRight faster">
+          <ul v-if="showEditMenu"
+              class="comment-edit__menu">
+            <li @click="showEditMenu = !showEditMenu"
+                class="close">Close
+            </li>
+            <li class="edit"
+                @click="showEditComment">Edit
+            </li>
+            <li class="delete"
+                @click="deleteComment">Delete
+            </li>
+          </ul>
+        </transition>
+        <div class="comment-content__wrapper">
+          <p class="comment-content__posted">Posted: {{comment.comment.created_at}}</p>
+          <h3>{{comment.comment.title}}</h3>
+          <p>{{comment.comment.body}}</p>
+        </div>
+        <h3 class="comment-subtitle">Lorem Ipsum is text of the typesetting industry</h3>
+        <div class="comment-back__home-wrapper">
+          <router-link :to="{name: 'home'}"
+                       class="comment-back__home-button">
+            Back to home page
+          </router-link>
+        </div>
+      </div>
+      <div v-else class="no-comment__wrapper  wrapper">
+        <h3>No comment with current id</h3>
+      </div>
     </div>
-    <div class="comment-wrapper wrapper">
-      <div>
-        <router-link :to="{name: 'comments'}">Back to comments</router-link>
-      </div>
-      <div class="comment-edit__wrapper">
-        <font-awesome-icon icon="edit"
-                           class="comment-edit__icon"
-                           @click="showEditMenu = !showEditMenu"/>
-      </div>
-      <ul v-if="showEditMenu"
-          class="comment-edit__menu">
-        <li @click="showEditMenu = !showEditMenu"
-            class="close">Close
-        </li>
-        <li class="edit"
-            @click="showEditComment">Edit
-        </li>
-        <li class="delete"
-            @click="deleteComment">Delete
-        </li>
-      </ul>
-      <div class="comment-content__wrapper">
-        <h3>{{comment.comment.title}}</h3>
-        <p>{{comment.comment.body}}</p>
-      </div>
-      <h3 class="comment-subtitle">Lorem Ipsum is text of the typesetting industry</h3>
-      <div class="comment-back__home-wrapper">
-        <router-link :to="{name: 'home'}"
-                     class="comment-back__home-button">
-          Back to home page
-        </router-link>
-      </div>
-    </div>
+
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import getComments from '../services/getComments';
+// import getComments from '../services/getComments';
 
 export default {
   data() {
     return {
+      newValue: 0,
       showEditMenu: false,
       showOverlay: false,
       showEditWindow: false,
@@ -72,12 +89,8 @@ export default {
   methods: {
     deleteComment() {
       const { id } = this.$route.params;
-      getComments.deleteComment(id)
-        .then((response) => {
-          if (response.status === 200) {
-            this.$router.go(-1);
-          }
-        });
+      const router = this.$router;
+      this.$store.dispatch('deleteComment', { id, router });
     },
     showEditComment() {
       this.showOverlay = !this.showOverlay;
@@ -96,9 +109,11 @@ export default {
       const myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
 
+      const date = new Date();
+
       const data = {
         headers: myHeaders,
-        created_at: 151551515,
+        created_at: `${date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()} ${date.getDay() < 10 ? `0${date.getDay()}` : date.getDay()}/${date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()}/${date.getFullYear()}`,
         title: this.newTitle,
         body: this.newBody,
         redirect: 'follow',
@@ -108,6 +123,7 @@ export default {
 
       this.showOverlay = !this.showOverlay;
       this.showEditWindow = !this.showEditWindow;
+
       this.newTitle = '';
       this.newBody = '';
     },
@@ -115,17 +131,29 @@ export default {
   mounted() {
     const { id } = this.$route.params;
 
-    getComments.getComment(id)
-      .then((response) => {
-        this.$store.commit('addComment', response.data);
-      });
+    this.$store.dispatch('getComment', id);
+  },
+  watch: {
+    showEditWindow() {
+      if (this.showEditWindow) {
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      document.body.style.overflow = 'auto';
+    },
   },
 };
 </script>
 
 <style lang="scss">
   .comment {
-    padding: 100px 0;
+    padding: 40px 0;
+    overflow: hidden;
+
+    @media(min-width: 768px) {
+      padding: 100px 0;
+    }
 
     &-wrapper {
       position: relative;
@@ -144,7 +172,6 @@ export default {
           &:after {
             width: 100%;
           }
-
         }
 
         &:before {
@@ -172,25 +199,32 @@ export default {
     }
 
     &-edit {
-
       &__wrapper {
         position: absolute;
         top: 0;
-        right: 20px;
+        right: 16px;
         overflow: hidden;
         border-radius: 5px 0px 5px 5px;
+
+        @media(min-width: 768px) {
+          right: 0;
+        }
       }
 
       &__menu {
         position: absolute;
-        top: 0;
-        right: 20px;
+        top: 20px;
+        right: 34px;
         width: 100px;
         text-align: center;
         background: #fff;
-        z-index: 10;
+        z-index: 1;
         overflow: hidden;
         border-radius: 5px 0px 5px 5px;
+
+        @media(min-width: 768px) {
+          right: 18px;
+        }
 
         li {
           padding: 10px;
@@ -241,6 +275,10 @@ export default {
           margin-bottom: 60px;
         }
       }
+
+      &__posted {
+        text-align: right;
+      }
     }
 
     &-subtitle {
@@ -281,9 +319,8 @@ export default {
   }
 
   .edit-comment {
-
     &__wrapper {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -291,6 +328,11 @@ export default {
       padding: 20px;
       border-radius: 5px;
       z-index: 9;
+      width: 90%;
+
+      @media(min-width: 768px) {
+        width: auto;
+      }
 
       h3 {
         font-size: 2em;
@@ -327,6 +369,15 @@ export default {
       border-radius: 5px;
       transition: background .5s ease;
       cursor: pointer;
+
+      &:disabled {
+        background: #bcbcbc;
+        cursor: not-allowed;
+
+        &:hover {
+          background: #bcbcbc;
+        }
+      }
 
       &:hover {
         background: #60e3a1;

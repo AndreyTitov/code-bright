@@ -6,6 +6,7 @@
             <div :key="index"
                 v-for="(comment, index) in comments.comments"
                 class="comment-card">
+              <p class="comment-card__posted">Posted: <span>{{comment.created_at}}</span></p>
               <h3>{{comment.title}}</h3>
               <p>{{comment.body}}</p>
               <router-link class="comment-card__btn"
@@ -35,19 +36,26 @@ export default {
   .comments {
 
     &-main__title {
-      font-size: 4.375em;
+      font-size: 2.5em;
       margin-bottom: 20px;
+
+      @media(min-width: 768px) {
+        font-size: 4.375em;
+      }
     }
   }
 
   .comment {
 
     &-card {
-      width: 49%;
       margin-bottom: 25px;
       background: #fff;
       border-radius: 5px;
       padding: 45px 30px;
+
+      @media (min-width: 768px) {
+        width: 49%;
+      }
 
       h3 {
         margin-bottom: 10px;
@@ -66,18 +74,21 @@ export default {
       }
 
       &__wrapper {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-wrap: wrap;
+
+        @media(min-width: 768px) {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
       }
 
       &__btn {
         display: block;
-        width: 150px;
         text-align: center;
         color: #000;
         background: #60e3a1;
+        width: 100%;
         border: none;
         border-radius: 5px;
         padding: 10px 15px;
@@ -85,13 +96,28 @@ export default {
         font-size: 1em;
         transition: background .5s ease;
 
-        &:hover {
+        &:hover, &:active {
           background: #48af7b;
+        }
+
+        @media(min-width: 768px) {
+          width: 150px;
+        }
+      }
+
+      &__posted {
+        color: #bcbcbc;
+        font-style: italic;
+        font-size: 0.8em;
+        white-space: nowrap !important;
+        text-align: right;
+
+        span {
+          color: #48af7b;
         }
       }
     }
   }
-
 
     .multi-ripple {
     width: 100px;

@@ -92,8 +92,7 @@
                       v-model="body"></textarea>
             <button class="add-comment__button"
                     @click="addComment"
-                    :disabled="title == '' || body == ''"
-                    >Send
+                    :disabled="title == '' || body == ''">Send
             </button>
           </form>
         </div>
@@ -118,10 +117,11 @@ export default {
 
       const myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
+      const date = new Date();
 
       const requestOptions = {
         headers: myHeaders,
-        created_at: 151551515,
+        created_at: `${date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()} ${date.getDay() < 10 ? `0${date.getDay()}` : date.getDay()}/${date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()}/${date.getFullYear()}`,
         title: this.title,
         body: this.body,
         redirect: 'follow',
@@ -132,7 +132,10 @@ export default {
 
       return axios.post('https://5cbef81d06a6810014c66193.mockapi.io/api/comments', requestOptions)
         .then((response) => {
-          console.log(response);
+          if (response.status === 201) {
+            alert('Submitted');
+          }
+          return console.log('error');
         })
         .catch((error) => {
           console.log(error);
@@ -150,17 +153,33 @@ export default {
       margin: 0 auto;
 
       &__title {
-        font-size: 4.375em;
+        font-size: 1.5em;
+        padding: 40px 0;
+
+        @media(min-width: 768px) {
+          font-size: 2em;
+        }
+
+        @media(min-width: 1200px) {
+          font-size: 4.375em;
+        }
 
         &-wrapper {
-          padding: 40px 140px;
+
+          @media(min-width: 768px) {
+            padding: 40px 140px;
+          }
         }
       }
     }
   }
 
   .about-us {
-    padding: 140px 0;
+    padding: 40px 0;
+
+    @media (min-width: 1200px) {
+      padding: 140px 0;
+    }
 
     &__wrapper {
 
@@ -172,6 +191,8 @@ export default {
     }
 
     &__card {
+      margin-bottom: 40px;
+
       @media (min-width: 768px) {
         width: 30%;
       }
@@ -182,13 +203,24 @@ export default {
 
     &-title {
       font-size: 2.25em;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
+      text-align: center;
+
+      @media(min-width: 768px) {
+        text-align: left;
+        margin-bottom: 40px;
+      }
     }
 
     &-icon {
+
       &__wrapper {
+        margin: 0 auto 10px;
         width: 40px;
-        margin-bottom: 10px;
+
+        @media(min-width: 768px) {
+          margin: 0 0 10px 0;
+        }
       }
     }
 
@@ -228,17 +260,21 @@ export default {
       background: #1d1e25;
 
       &__wrapper {
-        padding: 140px 0;
-        display: flex;
-        border-bottom: 1px solid #4a4d5e;
+        padding: 40px 0;
+
+        @media(min-width: 768px) {
+          padding: 140px 0;
+          display: flex;
+          border-bottom: 1px solid #4a4d5e;
+        }
       }
 
       &__button {
         border: none;
         background: #60e3a1;
         color: #1d1e25;
-        width: 150px;
         padding: 15px 50px;
+        width: 100%;
         font-size: 1rem;
         text-transform: uppercase;
         font-family: "Sofia Pro";
@@ -246,6 +282,10 @@ export default {
         border-radius: 5px;
         cursor: pointer;
         transition: background .5s ease;
+
+        @media(min-width: 768px) {
+          width: 150px;
+        }
 
         &:hover {
           background: #48af7b;
@@ -276,9 +316,13 @@ export default {
 
       &__title {
         color: #fff;
-        font-size: 4.375em;
+        font-size: 1.5em;
         position: relative;
         line-height: 1;
+
+        @media(min-width: 768px) {
+          font-size: 4.375em;
+        }
 
         &:before {
           content: '';
@@ -291,15 +335,23 @@ export default {
         }
 
         &-wrapper {
-          width: 40%;
           padding: 0 15px;
+          margin-bottom: 40px;
+
+          @media(min-width: 768px) {
+            width: 40%;
+            padding: 0 15px;
+          }
         }
       }
 
       &__form {
         &-wrapper {
-          width: 60%;
           padding: 0 15px;
+
+          @media(min-width: 768px) {
+            width: 60%;
+          }
         }
       }
     }

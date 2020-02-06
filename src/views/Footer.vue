@@ -26,15 +26,26 @@ export default {};
     padding: 40px 0;
 
     &-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+
+      @media(min-width: 768px) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
     }
   }
 
   .contacts {
 
     &-wrapper {
+      text-align: center;
+      margin-bottom: 20px;
+
+      @media(min-width: 768px) {
+        text-align: left;
+        margin-bottom: 0px;
+      }
+
       div {
         margin-bottom: 10px;
 
@@ -52,6 +63,12 @@ export default {};
   .copyright {
 
     &-wrapper {
+      text-align: center;
+
+      @media(min-width: 768px) {
+        text-align: left;
+      }
+
       p {
         color: #4a4d5e;
       }
