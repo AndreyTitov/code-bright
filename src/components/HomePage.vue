@@ -133,7 +133,7 @@ export default {
       return axios.post('https://5cbef81d06a6810014c66193.mockapi.io/api/comments', requestOptions)
         .then((response) => {
           if (response.status === 201) {
-            alert('Submitted');
+            return response;
           }
           return console.log('error');
         })

@@ -10,13 +10,25 @@
                     </a>
                 </div>
             </div>
-            <div class="header-nav__wrapper">
+            <div :class="showMobileMenu
+              ? `mobile-menu__overlay`
+              : `mobile-menu__overlay show-overlay`"
+                 @click="showMobileMenu = !showMobileMenu"></div>
+            <div class="header-menu__wrapper">
+              <font-awesome-icon icon="bars"
+                                 class="header-menu"
+                                 @click="showMobileMenu = !showMobileMenu" />
+            </div>
+            <div :class="showMobileMenu ? `header-nav__wrapper` : `header-nav__wrapper open-menu`">
                 <div class="header-nav">
-                    <router-link :to="{name: 'home', hash: '#about-us'}">
+                    <router-link :to="{name: 'home', hash: '#about-us'}"
+                                 @click.native="showMobileMenu = !showMobileMenu">
                         About us</router-link>
-                    <router-link :to="{name: 'home', hash: '#add-comment'}">
+                    <router-link :to="{name: 'home', hash: '#add-comment'}"
+                                 @click.native="showMobileMenu = !showMobileMenu">
                         Write comment</router-link>
-                    <router-link to="/comments">
+                    <router-link to="/comments"
+                                 @click.native="showMobileMenu = !showMobileMenu">
                         Comments</router-link>
                 </div>
             </div>
@@ -31,7 +43,18 @@ export default {
   data() {
     return {
       showMenu: false,
+      showMobileMenu: true,
     };
+  },
+  watch: {
+    showMobileMenu() {
+      if (!this.showMobileMenu) {
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      document.body.style.overflow = 'auto';
+    },
   },
 };
 </script>
@@ -58,13 +81,26 @@ export default {
         }
 
         &-nav {
-            a {
-                font-weight: bold;
-                color: #000;
-                margin-left: 20px;
-                text-transform: uppercase;
-                text-decoration: none;
-                font-size: 0.875em;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+
+          @media (min-width: 992px) {
+            flex-direction: row;
+          }
+
+          a {
+              font-weight: bold;
+              color: #000;
+              text-transform: uppercase;
+              text-decoration: none;
+              font-size: 0.875em;
+              padding: 10px 20px;
+
+              @media (min-width: 992px) {
+                margin-left: auto;
+                padding: 0;
+              }
 
                 &:first-child {
                     margin-left: 0;
@@ -86,10 +122,60 @@ export default {
                 }
 
             &__wrapper {
-                // width: 50%;
                 margin-left: auto;
+                position: absolute;
+                top: 0;
+                right: -100%;
+                width: 90%;
+                height: 100%;
+                background: #fff;
+                transition: right .5s ease;
+
+              @media (min-width: 992px) {
+                position: relative;
+                right: 0;
+                background: none;
+                margin-left: auto;
+                width: 50%;
+              }
             }
         }
+
+      &-menu {
+        &__wrapper {
+          margin-left: auto;
+
+          @media(min-width: 992px) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .open-menu {
+
+      display: block;
+      margin-left: auto;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 90%;
+      height: 100%;
+      background: #fff;
+    }
+
+    .mobile-menu__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+    }
+
+    .show-overlay {
+      display: block;
     }
 
     @keyframes activeLink {

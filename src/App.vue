@@ -55,6 +55,10 @@ img {
     margin: 0 auto;
   }
 
+  @media (min-width: 992px) {
+    width: 900px;
+  }
+
   @media (min-width: 1600px) {
     width: 1265px;
   }
