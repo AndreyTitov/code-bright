@@ -22,13 +22,13 @@
             <div :class="showMobileMenu ? `header-nav__wrapper` : `header-nav__wrapper open-menu`">
                 <div class="header-nav">
                     <router-link :to="{name: 'home', hash: '#about-us'}"
-                                 @click.native="showMobileMenu = !showMobileMenu">
+                                 @click.native="showMobileMenu = true">
                         About us</router-link>
                     <router-link :to="{name: 'home', hash: '#add-comment'}"
-                                 @click.native="showMobileMenu = !showMobileMenu">
+                                 @click.native="showMobileMenu = true">
                         Write comment</router-link>
                     <router-link to="/comments"
-                                 @click.native="showMobileMenu = !showMobileMenu">
+                                 @click.native="showMobileMenu = true">
                         Comments</router-link>
                 </div>
             </div>
@@ -129,6 +129,7 @@ export default {
                 width: 90%;
                 height: 100%;
                 background: #fff;
+                z-index: 9;
                 transition: right .5s ease;
 
               @media (min-width: 992px) {
@@ -153,7 +154,6 @@ export default {
     }
 
     .open-menu {
-
       display: block;
       margin-left: auto;
       position: absolute;
@@ -162,6 +162,7 @@ export default {
       width: 90%;
       height: 100%;
       background: #fff;
+      z-index: 9;
     }
 
     .mobile-menu__overlay {
