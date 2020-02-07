@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <footer class="footer">
     <section class="footer-wrapper wrapper">
       <div class="contacts-wrapper">
         <div>
@@ -13,7 +13,7 @@
         <p>Copyright © 2019 Test All Rights Reserved.</p>
       </div>
     </section>
-  </div>
+  </footer>
 </template>
 
 <script>
@@ -21,6 +21,10 @@ export default {};
 </script>
 
 <style lang="scss">
+  footer {
+    margin-top: auto;
+  }
+
   .footer {
     background: #1d1e25;
     padding: 40px 0;

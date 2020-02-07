@@ -24,7 +24,6 @@
         </button>
       </div>
     </transition>
-    <div>
       <div v-if="comment.comment" class="comment-wrapper wrapper">
         <div>
           <router-link :to="{name: 'comments'}">Back to comments</router-link>
@@ -65,14 +64,11 @@
       <div v-else class="no-comment__wrapper  wrapper">
         <h3>No comment with current id</h3>
       </div>
-    </div>
-
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-// import getComments from '../services/getComments';
 
 export default {
   data() {

@@ -31,6 +31,19 @@ class GetComments {
       });
   }
 
+  addComment(data) {
+    return axios.post(this.endpoint, data)
+      .then((response) => {
+        if (response.status === 201) {
+          return response;
+        }
+        return console.log('error');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   deleteComment(id) {
     return axios.delete(this.endpoint + id)
       .then((response) => {
@@ -46,7 +59,12 @@ class GetComments {
 
   editComment(data, id) {
     return axios.put(this.endpoint + id, data)
-      .then(response => response.data)
+      .then((response) => {
+        if (response.status === 200) {
+          return response;
+        }
+        return console.log('error');
+      })
       .catch((error) => {
         console.log(error);
       });

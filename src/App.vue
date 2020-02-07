@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <Header />
-    <div>
+    <main>
       <div class="text-center">
         <router-view />
       </div>
-    </div>
+    </main>
     <Footer />
   </div>
 </template>
@@ -29,15 +29,25 @@ export default {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
   font-family: 'Sofia Pro';
   background: #f7f7f7;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
 }
 
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 img {
@@ -49,7 +59,7 @@ img {
   padding-right: 15px;
 
   @media (min-width: 768px) {
-    width: 750px;
+    width: 700px;
     padding-left: 0;
     padding-right: 0;
     margin: 0 auto;

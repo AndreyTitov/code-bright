@@ -2,6 +2,11 @@ import getCommentsData from '../../services/getComments';
 
 export default {
   actions: {
+    addComment({ commit }, data) {
+      getCommentsData.addComment(data).then(() => {
+        commit('pushComment', data);
+      });
+    },
     getComment({ commit }, id) {
       getCommentsData.getComment(id).then((data) => {
         commit('addComment', data);
@@ -22,6 +27,9 @@ export default {
     },
   },
   mutations: {
+    pushComment(state, comment) {
+      state.comments = comment;
+    },
     addComment(state, comment) {
       state.comment = comment;
     },

@@ -77,6 +77,12 @@
         </div>
         <div class=add-comment__form-wrapper>
           <form>
+            <div v-if="completeSending"
+                 class="add-comment__process">
+              <font-awesome-icon icon="check-circle"
+                                 class="add-comment__success" />
+            </div>
+            <div v-if="completeOverlay" class="add-comment__overlay"></div>
             <input id="comment-title"
                    name="comment-title"
                    class="add-comment__input"
@@ -102,15 +108,19 @@
 </template>
 
 <script>
-import axios from 'axios';
+
+import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
       title: '',
       body: '',
+      completeSending: false,
+      completeOverlay: false,
     };
   },
+  computed: mapState(['comments']),
   methods: {
     addComment(e) {
       e.preventDefault();
@@ -129,17 +139,8 @@ export default {
 
       this.title = '';
       this.body = '';
-
-      return axios.post('https://5cbef81d06a6810014c66193.mockapi.io/api/comments', requestOptions)
-        .then((response) => {
-          if (response.status === 201) {
-            return response;
-          }
-          return console.log('error');
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // this.completeOverlay = true;
+      this.$store.dispatch('addComment', requestOptions);
     },
   },
 };
@@ -165,7 +166,6 @@ export default {
         }
 
         &-wrapper {
-
           @media(min-width: 768px) {
             padding: 40px 140px;
           }
@@ -200,7 +200,6 @@ export default {
   }
 
   .card {
-
     &-title {
       font-size: 2.25em;
       margin-bottom: 20px;
@@ -213,7 +212,6 @@ export default {
     }
 
     &-icon {
-
       &__wrapper {
         margin: 0 auto 10px;
         width: 40px;
@@ -255,18 +253,42 @@ export default {
   }
 
   .add {
-
     &-comment {
       background: #1d1e25;
 
       &__wrapper {
-        padding: 40px 0;
+        padding-top: 40px;
+        padding-bottom: 40px;
 
         @media(min-width: 768px) {
-          padding: 140px 0;
+          padding-top: 140px;
+          padding-bottom: 140px;
           display: flex;
           border-bottom: 1px solid #4a4d5e;
         }
+      }
+
+      &__process {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9;
+      }
+
+      &__success {
+        color: #48af7b;
+        font-size: 4em;
+      }
+
+      &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(29,30,37,0.4);
+        z-index: 2;
       }
 
       &__button {
@@ -321,6 +343,10 @@ export default {
         line-height: 1;
 
         @media(min-width: 768px) {
+          font-size: 2.5em;
+        }
+
+        @media (min-width: 992px) {
           font-size: 4.375em;
         }
 
@@ -335,19 +361,17 @@ export default {
         }
 
         &-wrapper {
-          padding: 0 15px;
           margin-bottom: 40px;
 
           @media(min-width: 768px) {
             width: 40%;
-            padding: 0 15px;
           }
         }
       }
 
       &__form {
         &-wrapper {
-          padding: 0 15px;
+          position: relative;
 
           @media(min-width: 768px) {
             width: 60%;
