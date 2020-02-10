@@ -2,10 +2,14 @@ import getCommentsData from '../../services/getComments';
 
 export default {
   actions: {
-    addComment({ commit }, data) {
-      getCommentsData.addComment(data).then(() => {
-        commit('pushComment', data);
-      });
+    async addComment({ commit }, data) {
+      const addComment = await getCommentsData.addComment(data);
+      commit('pushComment', addComment);
+    },
+    async updateComments({ dispatch, commit }) {
+      await dispatch('addComment');
+      const updateState = await getCommentsData.getComments();
+      commit('updateCommentsState', updateState);
     },
     getComment({ commit }, id) {
       getCommentsData.getComment(id).then((data) => {
@@ -20,7 +24,7 @@ export default {
     deleteComment({ commit }, { id, router }) {
       getCommentsData.deleteComment(id).then((data) => {
         if (data.status === 200) {
-          commit('addplyDeleteComment', data);
+          commit('applyDeleteComment', data);
           router.go(-1);
         }
       });
@@ -30,13 +34,16 @@ export default {
     pushComment(state, comment) {
       state.comments = comment;
     },
+    updateCommentsState(state, comments) {
+      state.comments = comments;
+    },
     addComment(state, comment) {
       state.comment = comment;
     },
     applyComment(state, newComment) {
       state.comment = newComment;
     },
-    addplyDeleteComment(state, deletedComment) {
+    applyDeleteComment(state, deletedComment) {
       state.comment = deletedComment;
     },
   },

@@ -19,6 +19,11 @@
                            class="header-menu"
                            @click="showMobileMenu = !showMobileMenu"/>
       </div>
+      <div class="header-nav__close-wrapper">
+        <font-awesome-icon icon="times"
+                           :class="showMobileMenu ? `close-menu` : `close-menu show-close__menu`"
+                           @click="showMobileMenu = !showMobileMenu" />
+      </div>
       <div :class="showMobileMenu ? `header-nav__wrapper` : `header-nav__wrapper open-menu`">
         <div class="header-nav">
           <router-link :to="{name: 'home', hash: '#about-us'}"
@@ -107,10 +112,6 @@ export default {
           padding: 0;
         }
 
-        &:first-child {
-          margin-left: 0;
-        }
-
         &.router-link-exact-active {
           position: relative;
 
@@ -191,6 +192,20 @@ export default {
   .show-overlay {
     display: block;
     z-index: 9;
+  }
+
+  .close-menu {
+    position: absolute;
+    font-size: 24px;
+    top: 10px;
+    right: -100%;
+    color: #fff;
+    z-index: 9;
+    transition: right .6s ease;
+  }
+
+  .show-close__menu {
+    right: 92%;
   }
 
   @keyframes activeLink {

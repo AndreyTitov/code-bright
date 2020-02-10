@@ -103,6 +103,9 @@
           </form>
         </div>
       </div>
+      <div :key="index" v-for="(comment, index) in comments.comments" class="ab">
+        {{comment.title}}
+      </div>
     </section>
   </div>
 </template>
@@ -120,7 +123,9 @@ export default {
       completeOverlay: false,
     };
   },
-  computed: mapState(['comments']),
+  computed: {
+    ...mapState(['comments']),
+  },
   methods: {
     addComment(e) {
       e.preventDefault();
@@ -140,8 +145,16 @@ export default {
       this.title = '';
       this.body = '';
       // this.completeOverlay = true;
+
       this.$store.dispatch('addComment', requestOptions);
+      this.$store.dispatch('updateComments');
     },
+  },
+  mounted() {
+    this.$store.watch(state => state.comments,
+      (newValue, oldValue) => {
+        console.log(newValue, oldValue);
+      });
   },
 };
 </script>
@@ -379,5 +392,10 @@ export default {
         }
       }
     }
+  }
+
+
+  .ab {
+    color: #fff;
   }
 </style>

@@ -5,6 +5,19 @@ class GetComments {
     this.endpoint = 'https://5cbef81d06a6810014c66193.mockapi.io/api/comments/';
   }
 
+  addComment(data) {
+    return axios.post(this.endpoint, data)
+      .then((response) => {
+        if (response.status === 201) {
+          return response;
+        }
+        return console.log('error');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   getComments() {
     return axios.get(this.endpoint)
       .then((response) => {
@@ -23,19 +36,6 @@ class GetComments {
       .then((response) => {
         if (response.status === 200) {
           return response.data;
-        }
-        return console.log('error');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  addComment(data) {
-    return axios.post(this.endpoint, data)
-      .then((response) => {
-        if (response.status === 201) {
-          return response;
         }
         return console.log('error');
       })
