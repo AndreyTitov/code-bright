@@ -2,14 +2,13 @@ import getCommentsData from '../../services/getComments';
 
 export default {
   actions: {
-    async addComment({ commit }, data) {
-      const addComment = await getCommentsData.addComment(data);
-      commit('pushComment', addComment);
-    },
-    async updateComments({ dispatch, commit }) {
-      await dispatch('addComment');
-      const updateState = await getCommentsData.getComments();
-      commit('updateCommentsState', updateState);
+    addComment({ commit }, data) {
+      getCommentsData.addComment(data).then((response) => {
+        if (response.status === 201) {
+          commit('pushComment', data);
+        }
+        console.log('Error');
+      });
     },
     getComment({ commit }, id) {
       getCommentsData.getComment(id).then((data) => {
@@ -33,9 +32,6 @@ export default {
   mutations: {
     pushComment(state, comment) {
       state.comments = comment;
-    },
-    updateCommentsState(state, comments) {
-      state.comments = comments;
     },
     addComment(state, comment) {
       state.comment = comment;
