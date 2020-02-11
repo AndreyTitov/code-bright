@@ -143,7 +143,7 @@ export default {
       this.body = '';
       // this.completeOverlay = true;
 
-      this.$store.dispatch('addComment', requestOptions);
+      this.$store.dispatch('addComment', requestOptions).then(user => console.log(user));
     },
   },
 };

@@ -3,11 +3,12 @@ import getCommentsData from '../../services/getComments';
 export default {
   actions: {
     addComment({ commit }, data) {
-      getCommentsData.addComment(data).then((response) => {
-        if (response.status === 201) {
+      return getCommentsData.addComment(data).then((response) => {
+        if (response) {
           commit('pushComment', data);
         }
-        console.log('Error');
+      }).catch((error) => {
+        console.log(error);
       });
     },
     getComment({ commit }, id) {

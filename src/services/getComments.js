@@ -11,7 +11,7 @@ class GetComments {
         if (response.status === 201) {
           return response;
         }
-        return console.log('error');
+        return console.log('Added');
       })
       .catch((error) => {
         console.log(error);
@@ -35,6 +35,7 @@ class GetComments {
     return axios.get(this.endpoint + id)
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data);
           return response.data;
         }
         return console.log('error');
