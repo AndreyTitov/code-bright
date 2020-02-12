@@ -8,9 +8,7 @@ export default {
           commit('pushComment', data);
         }
         return response;
-      }).catch((error) => {
-        console.log(error);
-      });
+      }).catch(error => error);
     },
     getComment({ commit }, id) {
       return getCommentsData.getComment(id).then((data) => {
