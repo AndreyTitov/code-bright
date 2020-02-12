@@ -1,5 +1,7 @@
 # Test case for Code bright
 
+# [Watch Demo](https://andreytitov.github.io/code-bright/dist/index.html)
+
 ## Project setup
 ```
 yarn install
