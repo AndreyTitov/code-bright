@@ -405,7 +405,6 @@ export default {
   }
 
   /* MESH LOADER */
-
   .mesh-loader {
     overflow: hidden;
     height: inherit;
@@ -492,8 +491,7 @@ export default {
       transform: rotate(360deg);
     }
   }
-
-  $progress: #28e0da;
+  $progress: #48af7b;
   $success: #1df295;
 
   $ease: cubic-bezier(.39,0,.41,1);
