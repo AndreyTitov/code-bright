@@ -7,12 +7,7 @@ class GetComments {
 
   addComment(data) {
     return axios.post(this.endpoint, data)
-      .then((response) => {
-        if (response.status === 201) {
-          return response;
-        }
-        return console.log('Added');
-      })
+      .then(response => response)
       .catch((error) => {
         console.log(error);
       });

@@ -7,26 +7,28 @@ export default {
         if (response) {
           commit('pushComment', data);
         }
+        return response;
       }).catch((error) => {
         console.log(error);
       });
     },
     getComment({ commit }, id) {
-      getCommentsData.getComment(id).then((data) => {
+      return getCommentsData.getComment(id).then((data) => {
         commit('addComment', data);
+        return data;
       });
     },
     editComment({ commit }, { data, id }) {
-      getCommentsData.editComment(data, id).then(() => {
+      return getCommentsData.editComment(data, id).then(() => {
         commit('applyComment', data);
+        return data;
       });
     },
     deleteComment({ commit }, { id, router }) {
-      getCommentsData.deleteComment(id).then((data) => {
-        if (data.status === 200) {
-          commit('applyDeleteComment', data);
-          router.go(-1);
-        }
+      return getCommentsData.deleteComment(id).then((data) => {
+        commit('applyDeleteComment', data);
+        router.go(-1);
+        return data;
       });
     },
   },

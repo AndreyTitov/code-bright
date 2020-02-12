@@ -24,6 +24,16 @@
         </button>
       </div>
     </transition>
+    <div v-if="loading">
+      <div class="frame">
+        <div class="loader">
+          <div class="line"></div>
+          <div class="line"></div>
+          <span class="tick"></span>
+        </div>
+      </div>
+    </div>
+    <div v-else>
       <div v-if="comment.comment" class="comment-wrapper wrapper">
         <div>
           <router-link :to="{name: 'comments'}">Back to comments</router-link>
@@ -64,6 +74,7 @@
       <div v-else class="no-comment__wrapper  wrapper">
         <h3>No comment with current id</h3>
       </div>
+    </div>
   </div>
 </template>
 
@@ -73,6 +84,7 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
+      loading: true,
       newValue: 0,
       showEditMenu: false,
       showOverlay: false,
@@ -115,7 +127,12 @@ export default {
         redirect: 'follow',
       };
 
-      this.$store.dispatch('editComment', { data, id });
+      this.loading = true;
+      this.$store.dispatch('editComment', { data, id }).then((response) => {
+        if (response) {
+          this.loading = false;
+        }
+      });
 
       this.showOverlay = !this.showOverlay;
       this.showEditWindow = !this.showEditWindow;
@@ -127,7 +144,11 @@ export default {
   mounted() {
     const { id } = this.$route.params;
 
-    this.$store.dispatch('getComment', id);
+    this.$store.dispatch('getComment', id).then((data) => {
+      if (data) {
+        this.loading = false;
+      }
+    });
   },
   watch: {
     showEditWindow() {

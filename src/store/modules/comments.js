@@ -2,9 +2,10 @@ import getCommentsData from '../../services/getComments';
 
 export default {
   actions: {
-    async getComments({ commit }) {
-      getCommentsData.getComments().then((data) => {
+    getComments({ commit }) {
+      return getCommentsData.getComments().then((data) => {
         commit('addComments', data);
+        return data;
       });
     },
   },

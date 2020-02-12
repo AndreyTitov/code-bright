@@ -75,7 +75,7 @@
         <div class="add-comment__title-wrapper">
           <h3 class=add-comment__title>Write comment</h3>
         </div>
-        <div class=add-comment__form-wrapper>
+        <div class="add-comment__form-wrapper">
           <form>
             <div v-if="completeSending"
                  class="add-comment__process">
@@ -83,6 +83,15 @@
                                  class="add-comment__success" />
             </div>
             <div v-if="completeOverlay" class="add-comment__overlay"></div>
+            <div v-if="completeOverlay">
+              <div :class="sendedAnimation ? `frame complete` : `frame`">
+                <div class="loader">
+                  <div class="line"></div>
+                  <div class="line"></div>
+                  <span class="tick"></span>
+                </div>
+              </div>
+            </div>
             <input id="comment-title"
                    name="comment-title"
                    class="add-comment__input"
@@ -118,6 +127,7 @@ export default {
       body: '',
       completeSending: false,
       completeOverlay: false,
+      sendedAnimation: false,
     };
   },
   computed: {
@@ -141,9 +151,17 @@ export default {
 
       this.title = '';
       this.body = '';
-      // this.completeOverlay = true;
+      this.completeOverlay = true;
 
-      this.$store.dispatch('addComment', requestOptions).then(user => console.log(user));
+      this.$store.dispatch('addComment', requestOptions).then((response) => {
+        if (response.status === 201) {
+          this.sendedAnimation = true;
+          setTimeout(() => {
+            this.completeOverlay = false;
+            this.sendedAnimation = false;
+          }, 2000);
+        }
+      });
     },
   },
 };
@@ -375,6 +393,8 @@ export default {
       &__form {
         &-wrapper {
           position: relative;
+          overflow: hidden;
+          border-radius: 5px;
 
           @media(min-width: 768px) {
             width: 60%;
@@ -383,4 +403,273 @@ export default {
       }
     }
   }
+
+  /* MESH LOADER */
+
+  .mesh-loader {
+    overflow: hidden;
+    height: inherit;
+    width: inherit;
+  }
+  .mesh-loader .circle {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    background: #48af7b;
+    border-radius: 50%;
+    margin: -15px;
+    -webkit-animation: mesh 3s ease-in-out infinite -1.5s;
+    animation: mesh 3s ease-in-out infinite -1.5s;
+  }
+
+  .mesh-loader > div .circle:last-child {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+  }
+
+  .mesh-loader > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+
+  .mesh-loader > div:last-child {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  @-webkit-keyframes mesh {
+    0% {
+      -webkit-transform-origin: 50% -100%;
+      transform-origin: 50% -100%;
+      -webkit-transform: rotate(0);
+      transform: rotate(0);
+    }
+    50% {
+      -webkit-transform-origin: 50% -100%;
+      transform-origin: 50% -100%;
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+    50.1% {
+      -webkit-transform-origin: 50% 200%;
+      transform-origin: 50% 200%;
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform-origin: 50% 200%;
+      transform-origin: 50% 200%;
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes mesh {
+    0% {
+      -webkit-transform-origin: 50% -100%;
+      transform-origin: 50% -100%;
+      -webkit-transform: rotate(0);
+      transform: rotate(0);
+    }
+    50% {
+      -webkit-transform-origin: 50% -100%;
+      transform-origin: 50% -100%;
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+    50.1% {
+      -webkit-transform-origin: 50% 200%;
+      transform-origin: 50% 200%;
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform-origin: 50% 200%;
+      transform-origin: 50% 200%;
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  $progress: #28e0da;
+  $success: #1df295;
+
+  $ease: cubic-bezier(.39,0,.41,1);
+  $out: cubic-bezier(0,0,.23,1);
+  $in: cubic-bezier(.71,.01,.91,.99);
+
+  .frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    z-index: 9;
+    border-radius: 50%;
+  }
+
+  .loader {
+    height: 15vw;
+    width: 15vw;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1vw rgba(black,.03);
+    outline: none;
+    position: relative;
+
+    .line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
+
+      animation: rotate 1.5s $ease forwards infinite;
+
+      @keyframes rotate {
+        to {
+          transform: rotate(180deg);
+        }
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom:0;
+        border-radius: 50%;
+        transition: 1s $out, opacity 0s;
+        border: 1vw solid transparent;
+        transform: rotate(-45deg);
+
+        @keyframes line {
+          45%,55% {
+            transform: rotate(135deg);
+          }
+          100% {
+            transform: rotate(315deg);
+          }
+        }
+      }
+
+      &:first-of-type {
+        transform-origin: left center;
+        left: 50%;
+        right: 0;
+
+        &:before {
+          left: -100%;
+          right: 0;
+          border-top-color: $progress;
+          border-left-color: $progress;
+          animation: line 1.5s $ease forwards infinite;
+        }
+      }
+
+      &:last-of-type {
+        right: 50%;
+        left: 0;
+        transform-origin: right center;
+
+        &:before {
+          right: -100%;
+          left: 0;
+          opacity: 0;
+          border-bottom-color: $progress;
+          border-right-color: $progress;
+          // animation: line 2s forwards infinite;
+        }
+      }
+    }
+  }
+
+  .complete {
+
+    .line:first-of-type {
+
+      &:before {
+        animation: none;
+        opacity: 1;
+        transform: rotate(135deg);
+        border-top-color: $success;
+        border-left-color: $success;
+      }
+    }
+
+    .line:last-of-type {
+
+      &:before {
+        opacity: 1;
+        transform: rotate(135deg);
+        border-bottom-color: $success;
+        border-right-color: $success;
+      }
+    }
+
+    .tick {
+      animation: tick 1s $out forwards .5s;
+
+      @keyframes tick {
+        0% {
+          transform: translate3d(-50%,-70%,0) rotate(-40deg);
+        }
+        50% {
+          transform: translate3d(-50%,0%,0) rotate(-40deg);
+        }
+        100% {
+          transform: translate3d(-50%,-50%,0) rotate(-45deg);
+        }
+      }
+
+      &:before,
+      &:after {
+        transform: scale3d(1,1,1);
+      }
+    }
+
+  }
+
+
+  .tick {
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate3d(-50%,-50%,0) rotate(-45deg);
+    width: 34%;
+    height: 15%;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      background: $success;
+    }
+
+    &:before {
+      top: 0;
+      left: 0;
+      width: 1vw;
+      bottom: 0;
+      transform-origin: top;
+      transform: scale3d(1,0,1);
+      transition: .4s $ease .6s;
+    }
+
+    &:after {
+      right: 0;
+      left: 0;
+      height: 1vw;
+      bottom: 0;
+      transform-origin: left;
+      transform: scale3d(0,1,1);
+      transition: .8s $out 1s;
+    }
+  }
+
+
 </style>

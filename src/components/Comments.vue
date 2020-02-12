@@ -1,23 +1,34 @@
 <template>
   <div class="comments wrapper">
     <h3 class="comments-main__title">Comments</h3>
-      <div v-if="comments.comments.length > 0">
-          <div class="comment-card__wrapper">
-            <div :key="index"
-                v-for="(comment, index) in comments.comments"
-                class="comment-card">
-              <p class="comment-card__posted">Posted: <span>{{comment.created_at}}</span></p>
-              <h3>{{comment.title}}</h3>
-              <p>{{comment.body}}</p>
-              <router-link class="comment-card__btn"
-                :to="{name: 'currentId', params: {id: comment.id}}">Read more
-              </router-link>
-            </div>
+    <div v-if="loading">
+        <div class="frame">
+          <div class="loader">
+            <div class="line"></div>
+            <div class="line"></div>
+            <span class="tick"></span>
           </div>
         </div>
-        <div v-else>
-          <h3>No comments yet</h3>
+    </div>
+    <div v-else>
+      <div v-if="comments.comments.length > 0">
+        <div class="comment-card__wrapper">
+          <div :key="index"
+               v-for="(comment, index) in comments.comments"
+               class="comment-card">
+            <p class="comment-card__posted">Posted: <span>{{comment.created_at}}</span></p>
+            <h3>{{comment.title}}</h3>
+            <p>{{comment.body}}</p>
+            <router-link class="comment-card__btn"
+                         :to="{name: 'currentId', params: {id: comment.id}}">Read more
+            </router-link>
+          </div>
         </div>
+      </div>
+      <div v-else>
+        <h3>No comments yet</h3>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,9 +36,18 @@
 import { mapState } from 'vuex';
 
 export default {
+  data() {
+    return {
+      loading: true,
+    };
+  },
   computed: mapState(['comments']),
   mounted() {
-    this.$store.dispatch('getComments');
+    this.$store.dispatch('getComments').then((data) => {
+      if (data) {
+        this.loading = false;
+      }
+    });
   },
 };
 </script>
