@@ -12,7 +12,14 @@
     </div>
     <div v-else>
       <div v-if="comments.comments.length > 0">
-        <div class="comment-card__wrapper">
+        <div v-masonry="comments"
+             id="comments"
+             column-width=".comment-card"
+             stagger="0.03s"
+             horizontal-order="true"
+             item-selector=".comment-card"
+             gutter="10"
+             class="comment-card__wrapper">
           <div :key="index"
                v-for="(comment, index) in comments.comments"
                class="comment-card">
@@ -68,10 +75,11 @@ export default {
   .comment {
 
     &-card {
-      margin-bottom: 25px;
       background: #fff;
       border-radius: 5px;
       padding: 45px 30px;
+      width: 100%;
+      margin-bottom: 10px;
 
       @media (min-width: 768px) {
         width: 49%;
@@ -86,21 +94,6 @@ export default {
       p {
         margin-bottom: 10px;
         white-space: pre-line;
-        /*overflow: hidden;*/
-        /*text-overflow: ellipsis;*/
-        /*display: -webkit-box;*/
-        /*-webkit-box-orient: vertical;*/
-        /*-webkit-line-clamp: 1;*/
-      }
-
-      &__wrapper {
-
-        @media(min-width: 768px) {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          flex-wrap: wrap;
-        }
       }
 
       &__btn {

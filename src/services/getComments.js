@@ -8,62 +8,31 @@ class GetComments {
   addComment(data) {
     return axios.post(this.endpoint, data)
       .then(response => response)
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(error => error);
   }
 
   getComments() {
     return axios.get(this.endpoint)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.data;
-        }
-        return console.log('error');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(response => response.data)
+      .catch(error => error);
   }
 
   getComment(id) {
     return axios.get(this.endpoint + id)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data);
-          return response.data;
-        }
-        return console.log('error');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(response => response.data)
+      .catch(error => error);
   }
 
   deleteComment(id) {
     return axios.delete(this.endpoint + id)
-      .then((response) => {
-        if (response.status === 200) {
-          return response;
-        }
-        return console.log('error');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(response => response)
+      .catch(error => error);
   }
 
   editComment(data, id) {
     return axios.put(this.endpoint + id, data)
-      .then((response) => {
-        if (response.status === 200) {
-          return response;
-        }
-        return console.log('error');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(response => response)
+      .catch(error => error);
   }
 }
 
