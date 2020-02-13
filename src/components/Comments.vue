@@ -18,7 +18,7 @@
                class="comment-card">
             <p class="comment-card__posted">Posted: <span>{{comment.created_at}}</span></p>
             <h3>{{comment.title}}</h3>
-            <p>{{comment.body}}</p>
+            <p>{{comment.body.split('\n').shift()}}</p>
             <router-link class="comment-card__btn"
                          :to="{name: 'currentId', params: {id: comment.id}}">Read more
             </router-link>

@@ -291,6 +291,10 @@ export default {
           font-size: 3em;
           margin-bottom: 60px;
         }
+
+        p {
+          white-space: pre-wrap;
+        }
       }
 
       &__posted {
