@@ -31,5 +31,4 @@ new Vue({
   render: h => h(App),
 }).$mount('#app');
 
-navigator.serviceWorker.register('/service-worker.js')
-  .then(resp => console.log(resp));
+navigator.serviceWorker.register('/service-worker.js');
