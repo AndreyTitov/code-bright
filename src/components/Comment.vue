@@ -294,6 +294,7 @@ export default {
 
         p {
           white-space: pre-wrap;
+          word-wrap: break-word;
         }
       }
 

@@ -1,0 +1,17 @@
+{
+    "name": "Code bright PWA",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "/images/icon-128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "display": "standalone"
+}

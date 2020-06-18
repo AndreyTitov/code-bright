@@ -16,12 +16,13 @@ import './assets/scss/adjustments.scss';
 // Import font
 import './assets/fonts/stylesheet.css';
 
+import './registerServiceWorker';
+
 library.add(faEdit, faBars, faTimes, faCheckCircle);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
-
 Vue.use(VueMasonryPlugin);
 
 new Vue({
@@ -29,3 +30,6 @@ new Vue({
   store,
   render: h => h(App),
 }).$mount('#app');
+
+navigator.serviceWorker.register('/service-worker.js')
+  .then(resp => console.log(resp));

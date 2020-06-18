@@ -12,8 +12,7 @@
     </div>
     <div v-else>
       <div v-if="comments.comments.length > 0">
-        <div v-masonry="comments"
-             id="comments"
+        <div v-masonry
              column-width=".comment-card"
              stagger="0.03s"
              horizontal-order="true"
@@ -53,6 +52,7 @@ export default {
     this.$store.dispatch('getComments').then((data) => {
       if (data) {
         this.loading = false;
+        this.$redrawVueMasonry();
       }
     });
   },
@@ -94,6 +94,7 @@ export default {
       p {
         margin-bottom: 10px;
         white-space: pre-line;
+        word-wrap: break-word;
       }
 
       &__btn {
