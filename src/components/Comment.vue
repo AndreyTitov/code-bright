@@ -59,7 +59,8 @@
           </ul>
         </transition>
         <div class="comment-content__wrapper">
-          <p class="comment-content__posted">Posted: {{comment.comment.created_at}}</p>
+          <p class="comment-content__posted">
+            Posted: {{new Date(comment.comment.created_at).toString()}}</p>
           <h3>{{comment.comment.title}}</h3>
           <p>{{comment.comment.body}}</p>
         </div>

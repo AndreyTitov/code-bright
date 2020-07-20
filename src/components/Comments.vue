@@ -22,7 +22,8 @@
           <div :key="index"
                v-for="(comment, index) in comments.comments"
                class="comment-card">
-            <p class="comment-card__posted">Posted: <span>{{comment.created_at}}</span></p>
+            <p class="comment-card__posted">Posted:
+              <span>{{new Date(comment.created_at).toString()}}</span></p>
             <h3>{{comment.title}}</h3>
             <p>{{comment.body.split('\n').shift()}}</p>
             <router-link class="comment-card__btn"
@@ -128,6 +129,7 @@ export default {
 
         span {
           color: #48af7b;
+          word-wrap: break-word;
         }
       }
     }
